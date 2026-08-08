@@ -12,7 +12,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
@@ -45,7 +49,7 @@ public class User {
 	private LocalDateTime createdAt;
 	
 	@UpdateTimestamp
-	@Column(name = "updated_at",nullable = false)
+	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
 	
 	@Column(name = "is_active", nullable = false)
