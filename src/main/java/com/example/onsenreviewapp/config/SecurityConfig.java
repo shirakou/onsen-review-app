@@ -36,6 +36,10 @@ public class SecurityConfig {
 				.defaultSuccessUrl("/", true) //ログイン成功後の遷移先
 				);
 		
+		http.logout(logout -> logout
+				.logoutSuccessUrl("/login") //ログアウト成功後の遷移先
+				);
+		
 		http.authenticationProvider(authenticationProvider()); //ユーザー取得方法とパスワード照合方法を設定
 		
 		return http.build(); //設定した内容からSecurityFilterChainを作成
