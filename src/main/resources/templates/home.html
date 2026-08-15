@@ -8,6 +8,13 @@
 
     <h1>温泉レビューアプリ</h1>
 
+    <h2>温泉検索</h2>
+
+    <form th:action="@{/}" method="get">
+        <input type="text" name="name" placeholder="温泉名を入力">
+        <button type="submit">検索</button>
+    </form>
+
     <h2>温泉一覧</h2>
 
     <div th:each="onsen : ${onsens}">

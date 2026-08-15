@@ -20,4 +20,11 @@ public class OnsenService {
 		
 		return onsens;
 	}
+	
+	public List<Onsen> searchByName(String name) {
+		
+		List<Onsen> onsens = onsenRepository.findByNameContaining(name);
+		
+		return onsens;
+	}
 }
