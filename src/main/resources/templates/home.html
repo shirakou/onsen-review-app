@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>温泉レビューアプリ</title>
+    <meta charset="UTF-8">
+    <title>温泉レビューアプリ</title>
 </head>
 <body>
 
-	<h1>温泉レビューアプリ</h1>
+    <h1>温泉レビューアプリ</h1>
 
-	<p>ログインしました</p>
+    <h2>温泉一覧</h2>
 
-	<form th:action="@{/logout}" method="post">
-	<button type="submit">ログアウト</button>
-	</form>
+    <div th:each="onsen : ${onsens}">
+        <p th:text="${onsen.name}"></p>
+        <p th:text="${onsen.prefecture}"></p>
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">ログアウト</button>
+    </form>
 
 </body>
 </html>
