@@ -1,6 +1,7 @@
 package com.example.onsenreviewapp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,12 @@ public class OnsenService {
 		List<Onsen> onsens = onsenRepository.findByPrefecture(prefecture);
 		
 		return onsens;
+	}
+	
+	public Optional<Onsen> getOnsenById(Long id) {
+		
+		Optional<Onsen> onsen = onsenRepository.findById(id);
+		
+		return onsen;
 	}
 }

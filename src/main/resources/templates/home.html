@@ -91,6 +91,8 @@
     <div th:each="onsen : ${onsens}">
         <p th:text="${onsen.name}"></p>
         <p th:text="${onsen.prefecture}"></p>
+	    <!-- 選択した温泉のIDをURLに入れて詳細画面へ遷移 -->
+	    <a th:href="@{/onsens/{onsenId}(onsenId=${onsen.id})}">詳細</a>
     </div>
 
     <form th:action="@{/logout}" method="post">

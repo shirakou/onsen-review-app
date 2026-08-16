@@ -13,4 +13,5 @@ public interface OnsenRepository extends JpaRepository<Onsen, Long> {
 	
 	// 都道府県が一致する温泉を検索する
 	List<Onsen> findByPrefecture(String prefecture);
+	
 }

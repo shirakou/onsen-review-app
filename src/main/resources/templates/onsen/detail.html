@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>温泉詳細</title>
+</head>
+<body>
+
+    <!-- ControllerからModelの"onsen"で渡された温泉名を表示 -->
+    <h1 th:text="${onsen.name}">温泉名</h1>
+
+    <!-- 温泉画像 -->
+    <div>
+        <img th:src="${onsen.imageUrl}"
+             th:alt="${onsen.name}"
+             width="300">
+    </div>
+
+    <div>
+        <p>
+            都道府県：
+            <span th:text="${onsen.prefecture}"></span>
+        </p>
+
+        <p>
+            住所：
+            <span th:text="${onsen.address}"></span>
+        </p>
+
+        <p>
+            電話番号：
+            <span th:text="${onsen.phone}"></span>
+        </p>
+
+        <p>
+            営業時間：
+            <span th:text="${onsen.businessHours}"></span>
+        </p>
+
+        <p>
+            定休日：
+            <span th:text="${onsen.holiday}"></span>
+        </p>
+
+        <p>
+            大人料金：
+            <span th:text="${onsen.adultPrice}"></span>円
+        </p>
+
+        <p>
+            子ども料金：
+            <span th:text="${onsen.childPrice}"></span>円
+        </p>
+
+        <p>
+            最寄駅：
+            <span th:text="${onsen.nearestStation}"></span>
+        </p>
+
+        <p>
+            駅からの所要時間：
+            <span th:text="${onsen.stationTime}"></span>分
+        </p>
+
+        <p>
+            家族風呂：
+            <span th:text="${onsen.familyBath ? 'あり' : 'なし'}"></span>
+        </p>
+
+        <p>
+            サウナ：
+            <span th:text="${onsen.sauna ? 'あり' : 'なし'}"></span>
+        </p>
+
+        <p>
+            露天風呂：
+            <span th:text="${onsen.openAirBath ? 'あり' : 'なし'}"></span>
+        </p>
+
+        <p>
+            食事処：
+            <span th:text="${onsen.restaurant ? 'あり' : 'なし'}"></span>
+        </p>
+
+        <p>
+            アルコール：
+            <span th:text="${onsen.alcohol ? 'あり' : 'なし'}"></span>
+        </p>
+
+        <p>
+            タオルレンタル：
+            <span th:text="${onsen.towelRental ? 'あり' : 'なし'}"></span>
+        </p>
+
+        <p>
+            駐車場：
+            <span th:text="${onsen.parking ? 'あり' : 'なし'}"></span>
+        </p>
+
+        <p>
+            説明：
+            <span th:text="${onsen.description}"></span>
+        </p>
+    </div>
+
+    <!-- ホーム画面へ戻る -->
+    <a th:href="@{/}">一覧へ戻る</a>
+
+</body>
+</html>
