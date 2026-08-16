@@ -19,16 +19,23 @@ public class HomeController {
 	private OnsenService onsenService;
 	
 	@GetMapping("/")
-	public String showHome(@RequestParam(required = false) String name, Model model) {
+	public String showHome(
+							@RequestParam(required = false) String name,
+							@RequestParam(required = false) String prefecture,
+							Model model) {
 		
 		List<Onsen> onsens;
 		
-		if (name == null || name.isBlank()) {
-			//全件取得
-			onsens = onsenService.getAllOnsens();
-		} else {
-			//nameで検索
+		if (name != null && !name.isBlank()) {
+			//名前検索
 			onsens = onsenService.searchByName(name);
+		} else if(prefecture != null && !prefecture.isBlank()) {
+			//都道府県検索
+			onsens = onsenService.searchByPrefecture(prefecture);
+			
+		} else {
+			//両方空
+			onsens = onsenService.getAllOnsens();
 		}
 		
 		model.addAttribute("onsens", onsens);
