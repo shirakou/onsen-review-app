@@ -17,6 +17,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "reviews",
@@ -25,6 +27,8 @@ uniqueConstraints = @UniqueConstraint(
 		   columnNames = {"user_id", "onsen_id"}
 		   )
 	)
+@Getter
+@Setter
 public class Review {
 	
 	@Id
