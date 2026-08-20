@@ -195,6 +195,10 @@
         コメント：
         <span th:text="${review.comment}"></span>
     </p>
+    
+	<a th:href="@{/reviews/{reviewId}/edit(reviewId=${review.id})}">
+	    編集
+	</a>
 
     <hr>
 
