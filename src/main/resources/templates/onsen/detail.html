@@ -200,6 +200,10 @@
 	    編集
 	</a>
 
+	<form th:action="@{/reviews/{reviewId}/delete(reviewId=${review.id})}"
+		method="post">
+		<button type="submit">削除</button>
+		</form>
     <hr>
 
 </div>

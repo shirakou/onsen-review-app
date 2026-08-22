@@ -110,4 +110,33 @@ public class ReviewController {
 		return "redirect:/onsens/" + review.getOnsen().getId();
 		
 	}
+	
+	@PostMapping("/reviews/{reviewId}/delete")
+	public String deleteReview(
+				@PathVariable Long reviewId,
+				Authentication authenticator
+			) {
+		
+		Optional<Review> optionalReview = reviewService.getReviewById(reviewId);
+		
+		if (optionalReview.isEmpty()) {
+			return "redirect:/";
+		}
+		
+		String email = authenticator.getName();
+		
+		Review review = optionalReview.get();
+		
+		Long onsenId = review.getOnsen().getId();
+		
+		String reviewUser = review.getUser().getEmail();
+		
+		if (!email.equals(reviewUser)) {
+			return  "redirect:/onsens/" + onsenId;
+		}
+		
+		reviewService.deleteReview(review);
+		
+		return "redirect:/onsens/" + onsenId;
+	}
 }

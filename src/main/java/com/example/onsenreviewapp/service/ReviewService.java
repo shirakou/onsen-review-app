@@ -43,4 +43,8 @@ public class ReviewService {
 		
 		return review;
 	}
+	
+	public void deleteReview(Review review) {
+		reviewRepository.delete(review);
+	}
 }
