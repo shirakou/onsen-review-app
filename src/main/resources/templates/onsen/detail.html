@@ -196,6 +196,8 @@
         <span th:text="${review.comment}"></span>
     </p>
     
+    <div th:if="${#authentication.name == review.user.email}">
+    
 	<a th:href="@{/reviews/{reviewId}/edit(reviewId=${review.id})}">
 	    編集
 	</a>
@@ -204,6 +206,7 @@
 		method="post">
 		<button type="submit">削除</button>
 		</form>
+	</div>
     <hr>
 
 </div>
