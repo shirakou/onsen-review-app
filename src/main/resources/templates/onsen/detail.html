@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -105,6 +106,27 @@
             <span th:text="${onsen.description}"></span>
         </p>
     </div>
+    
+    <!-- お気に入り -->
+<div sec:authorize="isAuthenticated()">
+
+    <!-- 未登録の場合 -->
+    <form th:if="${!isFavorite}"
+          th:action="@{/onsens/{onsenId}/favorite(onsenId=${onsen.id})}"
+          method="post">
+
+        <button type="submit">お気に入り登録</button>
+    </form>
+
+    <!-- 登録済みの場合 -->
+    <form th:if="${isFavorite}"
+          th:action="@{/onsens/{onsenId}/favorite/delete(onsenId=${onsen.id})}"
+          method="post">
+
+        <button type="submit">お気に入り解除</button>
+    </form>
+
+</div>
 
 
     <!-- レビュー投稿 -->

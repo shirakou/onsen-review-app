@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>温泉レビューアプリ</title>
@@ -95,9 +96,14 @@
 	    <a th:href="@{/onsens/{onsenId}(onsenId=${onsen.id})}">詳細</a>
     </div>
 
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">ログアウト</button>
-    </form>
+    <div sec:authorize="isAuthenticated()">
+    
+    	<a th:href="@{/mypage}">マイページ</a>
+    	
+	   	<form th:action="@{/logout}" method="post">
+	        <button type="submit">ログアウト</button>
+	    </form>
+    </div>
 
 </body>
 </html>

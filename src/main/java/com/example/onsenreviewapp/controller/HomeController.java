@@ -18,6 +18,7 @@ import com.example.onsenreviewapp.entity.Onsen;
 import com.example.onsenreviewapp.entity.Review;
 import com.example.onsenreviewapp.entity.User;
 import com.example.onsenreviewapp.form.ReviewForm;
+import com.example.onsenreviewapp.service.FavoriteService;
 import com.example.onsenreviewapp.service.OnsenService;
 import com.example.onsenreviewapp.service.ReviewService;
 import com.example.onsenreviewapp.service.UserService;
@@ -36,6 +37,9 @@ public class HomeController {
 	
 	@Autowired
 	private ReviewService reviewService;
+	
+	@Autowired
+	private FavoriteService favoriteService;
 	
 	@GetMapping("/")
 	public String showHome(
@@ -65,7 +69,9 @@ public class HomeController {
 	@GetMapping("/onsens/{onsenId}") //URLのonsenIdを使って温泉詳細を表示
 	public String showDetail(
 			@PathVariable Long onsenId, //URLのonsenIdを受け取る
-			Model model) {		
+			Model model,
+			Authentication authentication
+			) {		
 		
 		Optional<Onsen> onsen = onsenService.getOnsenById(onsenId);
 		
@@ -75,6 +81,15 @@ public class HomeController {
 		}
 		
 		Onsen detailOnsen = onsen.get();
+		
+		boolean isFavorite = false;
+		
+		if (authentication != null) {
+		    String email = authentication.getName();
+		    isFavorite = favoriteService.isFavorite(email, onsenId);
+		}
+
+		model.addAttribute("isFavorite", isFavorite);
 		
 		//指定した温泉のレビュー一覧を取得
 		List<Review> reviews = reviewService.getReviewsByOnsenId(onsenId);

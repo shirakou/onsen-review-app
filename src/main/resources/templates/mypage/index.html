@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>マイページ</title>
+</head>
+
+<body>
+
+    <h1>マイページ</h1>
+
+    <h2>お気に入り一覧</h2>
+
+    <!-- お気に入りが0件の場合の表示をここに書く -->
+<div th:if="${favorites.isEmpty()}">
+	<p>お気に入り登録した温泉はありません。</p>
+</div>
+
+    <!-- お気に入り一覧の繰り返し表示をここに書く -->
+<div th:each="favorite : ${favorites}">
+	
+	<p>
+		温泉名：
+		<span th:text="${favorite.onsen.name}"></span>
+	</p>
+	
+	<a th:href="@{/onsens/{onsenId}(onsenId=${favorite.onsen.id})}">
+		詳細
+	</a>
+	
+</div>
+
+    <a th:href="@{/}">一覧へ戻る</a>
+
+</body>
+
+</html>

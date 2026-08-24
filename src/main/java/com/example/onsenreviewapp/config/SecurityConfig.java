@@ -3,6 +3,7 @@ package com.example.onsenreviewapp.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +27,8 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/", "/login", "/signup").permitAll() //誰でもアクセス可能
+				.requestMatchers("/", "/login", "/signup").permitAll()
+				.requestMatchers(HttpMethod.GET, "/onsens/*").permitAll()//誰でもアクセス可能
 				.anyRequest().authenticated() //それ以外はログイン必須
 				);
 		

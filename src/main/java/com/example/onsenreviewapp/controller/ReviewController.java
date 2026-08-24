@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.onsenreviewapp.entity.Review;
 import com.example.onsenreviewapp.entity.User;
 import com.example.onsenreviewapp.form.ReviewForm;
+import com.example.onsenreviewapp.service.FavoriteService;
 import com.example.onsenreviewapp.service.ReviewService;
 
 import jakarta.validation.Valid;
