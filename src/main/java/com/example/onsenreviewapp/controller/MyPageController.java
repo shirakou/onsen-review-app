@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.onsenreviewapp.entity.Favorite;
 import com.example.onsenreviewapp.entity.User;
 import com.example.onsenreviewapp.form.ProfileForm;
 import com.example.onsenreviewapp.service.FavoriteService;
 import com.example.onsenreviewapp.service.UserService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class MyPageController {
@@ -61,5 +65,27 @@ public class MyPageController {
 		model.addAttribute("profileForm", profileForm);
 		
 		return "mypage/profile";
+	}
+	
+	@PostMapping("/mypage/profile")
+	public String updateProfile(
+			@Valid ProfileForm profileForm,
+			BindingResult bindingResult,
+			Authentication authentication
+			) {
+		
+		if (bindingResult.hasErrors()) {
+			return "mypage/profile";
+		}
+		
+		String email = authentication.getName();
+		
+		boolean updated = userService.updateUsername(email, profileForm.getUsername());
+		
+		if (updated == false) {
+			return "redirect:/";
+		}
+		
+		return "redirect:/mypage";
 	}
 }

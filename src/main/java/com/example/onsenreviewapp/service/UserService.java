@@ -45,4 +45,21 @@ public class UserService {
 		
 		return user;
 	}
+	
+	public boolean updateUsername(String email, String username) {
+		
+		Optional<User> optionalUser = userRepository.findByEmail(email);
+		
+		if (optionalUser.isEmpty()) {
+			return false;
+		}
+		
+		User user = optionalUser.get();
+		
+		user.setUsername(username);
+		
+		userRepository.save(user);
+		
+		return true;
+	}
 }

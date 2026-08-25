@@ -32,10 +32,11 @@ public class CustomUserDetailsService implements UserDetailsService{
 		
 		User loginUser = user.get();
 		
-		return new org.springframework.security.core.userdetails.User(
-				loginUser.getEmail(),
-				loginUser.getPassword(),
-				List.of(new SimpleGrantedAuthority(loginUser.getRole()))
-				);
+		return org.springframework.security.core.userdetails.User
+		        .withUsername(loginUser.getEmail())
+		        .password(loginUser.getPassword())
+		        .authorities(new SimpleGrantedAuthority(loginUser.getRole()))
+		        .disabled(!loginUser.getIsActive())
+		        .build();
 	}
 }
