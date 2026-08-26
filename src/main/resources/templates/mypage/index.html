@@ -35,6 +35,14 @@
 </div>
 
     <a th:href="@{/}">一覧へ戻る</a>
+    
+    <form th:action="@{/mypage/withdraw}"
+    method="post"
+    onsubmit="return confirm('本当に退会しますか?');">
+    
+    <button type="submit">退会する</button>
+    
+    </form>
 
 </body>
 

@@ -18,7 +18,8 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-//新規会員登録
+	// 新規ユーザーを登録する
+	// メールアドレスが登録済みの場合はfalseを返す
 	public boolean register(User user) {
 			
 			// メールアドレスが既に登録されている場合は登録しない
@@ -38,7 +39,7 @@ public class UserService {
 			return true;
 	}
 
-	// emailよりUserを取得
+	// emailに対応するユーザー情報を取得する
 	public Optional<User> getUserByEmail(String email) {
 		
 		Optional<User> user = userRepository.findByEmail(email);
@@ -46,6 +47,8 @@ public class UserService {
 		return user;
 	}
 	
+	// emailに対応するユーザーのusernameを更新する
+	// ユーザーが存在しない場合はfalseを返す
 	public boolean updateUsername(String email, String username) {
 		
 		Optional<User> optionalUser = userRepository.findByEmail(email);
@@ -57,6 +60,25 @@ public class UserService {
 		User user = optionalUser.get();
 		
 		user.setUsername(username);
+		
+		userRepository.save(user);
+		
+		return true;
+	}
+	
+	// emailに対応するユーザーのisActiveをfalseにして退会状態にする
+	// ユーザーが存在しない場合はfalseを返す
+	public boolean withdrawUser(String email) {
+		
+		Optional<User> optionalUser = userRepository.findByEmail(email);
+		
+		if (optionalUser.isEmpty()) {
+			return false;
+		}
+		
+		User user = optionalUser.get();
+		
+		user.setIsActive(false);
 		
 		userRepository.save(user);
 		

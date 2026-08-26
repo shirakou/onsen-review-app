@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,8 @@ import com.example.onsenreviewapp.form.ProfileForm;
 import com.example.onsenreviewapp.service.FavoriteService;
 import com.example.onsenreviewapp.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @Controller
@@ -88,4 +91,30 @@ public class MyPageController {
 		
 		return "redirect:/mypage";
 	}
+	
+	@PostMapping("/mypage/withdraw")
+	public String withdraw(
+			Authentication authentication,
+			HttpServletRequest request,
+			HttpServletResponse response
+			) {
+		
+		String email = authentication.getName();
+		
+		boolean withdraw = userService.withdrawUser(email);
+		
+		if (withdraw == false) {
+			return "redirect:/mypage";
+		}
+		
+		//退会成功後、ログイン状態を終了する
+		SecurityContextLogoutHandler logoutHandler = 
+				new SecurityContextLogoutHandler();
+		
+		logoutHandler.logout(request, response, authentication);
+		
+		
+		return "redirect:/login?withdrawn";
+	}
+	
 }
