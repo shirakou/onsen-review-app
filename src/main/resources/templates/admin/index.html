@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理者メニュー</title>
+</head>
+
+<body>
+
+    <h1>管理者メニュー</h1>
+
+    <ul>
+        <li>
+            <a th:href="@{/admin/onsens}">
+                温泉管理
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/admin/users}">
+                ユーザー管理
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/admin/reviews}">
+                レビュー管理
+            </a>
+        </li>
+    </ul>
+
+    <a th:href="@{/}">
+        ホームへ戻る
+    </a>
+
+</body>
+
+</html>

@@ -29,6 +29,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/", "/login", "/signup").permitAll()
 				.requestMatchers(HttpMethod.GET, "/onsens/*").permitAll()//誰でもアクセス可能
+				.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 				.anyRequest().authenticated() //それ以外はログイン必須
 				);
 		

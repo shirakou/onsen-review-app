@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>温泉管理</title>
+</head>
+
+<body>
+
+    <h1>温泉管理</h1>
+
+    <a th:href="@{/admin/onsens/new}">
+        温泉を新規登録
+    </a>
+
+    <div th:if="${onsens.isEmpty()}">
+        <p>登録されている温泉はありません。</p>
+    </div>
+
+    <table th:if="${!onsens.isEmpty()}">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>温泉名</th>
+                <th>都道府県</th>
+                <th>住所</th>
+                <th>最終更新日時</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="onsen : ${onsens}">
+
+                <td th:text="${onsen.id}"></td>
+
+                <td th:text="${onsen.name}"></td>
+
+                <td th:text="${onsen.prefecture}"></td>
+
+                <td th:text="${onsen.address}"></td>
+
+                <td th:text="${onsen.updatedAt}"></td>
+
+                <td>
+                    <a th:href="@{/admin/onsens/{id}/edit(id=${onsen.id})}">
+                        編集
+                    </a>
+
+                    <form th:action="@{/admin/onsens/{id}/delete(id=${onsen.id})}"
+                          method="post"
+                          onsubmit="return confirm('本当に削除しますか？');">
+
+                        <button type="submit">
+                            削除
+                        </button>
+
+                    </form>
+                </td>
+
+            </tr>
+        </tbody>
+
+    </table>
+
+    <a th:href="@{/admin}">
+        管理者メニューへ戻る
+    </a>
+
+</body>
+
+</html>

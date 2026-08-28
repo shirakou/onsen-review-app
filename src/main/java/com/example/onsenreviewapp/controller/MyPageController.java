@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.onsenreviewapp.entity.Favorite;
+import com.example.onsenreviewapp.entity.Review;
 import com.example.onsenreviewapp.entity.User;
 import com.example.onsenreviewapp.form.ProfileForm;
 import com.example.onsenreviewapp.service.FavoriteService;
+import com.example.onsenreviewapp.service.ReviewService;
 import com.example.onsenreviewapp.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +33,9 @@ public class MyPageController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private ReviewService reviewService;
+	
 	@GetMapping("/mypage")
 	public String showMyPage(
 			Authentication authentication,
@@ -41,6 +46,10 @@ public class MyPageController {
 		List<Favorite> favorites = favoriteService.getFavoritesByEmail(email);
 		
 		model.addAttribute("favorites", favorites);
+		
+		List<Review> reviews = reviewService.getReviewsByEmail(email);
+		
+		model.addAttribute("reviews", reviews);
 		
 		return "mypage/index";
 	}

@@ -47,4 +47,12 @@ public class ReviewService {
 	public void deleteReview(Review review) {
 		reviewRepository.delete(review);
 	}
+	
+	//指定したUserのレビュー一覧を取得
+	public List<Review> getReviewsByEmail(String email) {
+		
+		List<Review> reviews = reviewRepository.findByUser_Email(email);
+		
+		return reviews;
+	}
 }

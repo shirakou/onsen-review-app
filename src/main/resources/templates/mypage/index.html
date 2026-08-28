@@ -34,6 +34,38 @@
 	
 </div>
 
+	<h2>レビュー履歴</h2>
+
+<div th:if="${reviews.isEmpty()}">
+    <p>レビュー履歴が存在しません。</p>
+</div>
+
+<div th:each="review : ${reviews}">
+    <p>
+        温泉名：
+        <span th:text="${review.onsen.name}"></span>
+    </p>
+
+    <p>
+        タイトル：
+        <span th:text="${review.title}"></span>
+    </p>
+
+    <p>
+        評価：
+        <span th:text="${review.rating}"></span>
+    </p>
+
+    <p>
+        コメント：
+        <span th:text="${review.comment}"></span>
+    </p>
+
+    <a th:href="@{/reviews/{id}/edit(id=${review.id})}">
+        編集
+    </a>
+</div>
+
     <a th:href="@{/}">一覧へ戻る</a>
     
     <form th:action="@{/mypage/withdraw}"
