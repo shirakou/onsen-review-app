@@ -16,4 +16,6 @@ public interface ReviewRepository extends JpaRepository <Review, Long >{
 	
 	//指定したメールアドレスのユーザーが投稿したレビューを全て取得する
 	List<Review> findByUser_Email(String email); 
+	
+	boolean existsByOnsen_Id(Long onsenId);
 }

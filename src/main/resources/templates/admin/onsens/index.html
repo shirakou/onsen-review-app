@@ -14,6 +14,10 @@
     <a th:href="@{/admin/onsens/new}">
         温泉を新規登録
     </a>
+    
+    <div th:if="${param.deleteError != null}">
+    	<p>レビューまたはお気に入りが存在するため削除できません。</p>
+    </div>
 
     <div th:if="${onsens.isEmpty()}">
         <p>登録されている温泉はありません。</p>

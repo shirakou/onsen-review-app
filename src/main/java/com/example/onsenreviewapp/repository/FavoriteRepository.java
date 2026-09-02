@@ -22,4 +22,6 @@ public interface FavoriteRepository extends JpaRepository <Favorite, Long>{
 	//指定したユーザーのお気に入り一覧を取得する
 	List<Favorite> findByUser_Id(
 			Long userId);
+	
+	boolean existsByOnsen_Id(Long onsenId);
 }
