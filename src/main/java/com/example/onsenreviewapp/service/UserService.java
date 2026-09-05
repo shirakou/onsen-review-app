@@ -1,5 +1,6 @@
 package com.example.onsenreviewapp.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,62 @@ public class UserService {
 		User user = optionalUser.get();
 		
 		user.setIsActive(false);
+		
+		userRepository.save(user);
+		
+		return true;
+	}
+	
+	//全ユーザー取得
+	
+	public List<User> getAllUsers() {
+		
+		List<User> users = userRepository.findAll();
+		
+		return users;
+	}
+	
+	public boolean deactivateUser(Long userId) {
+		
+		Optional<User> optionalUser = userRepository.findById(userId);
+		
+		if (optionalUser.isEmpty()) {
+			return false;
+		}
+		
+		User user = optionalUser.get();
+		
+		if (user.getRole().equals("ROLE_ADMIN")) {
+			return false;
+		}
+		
+		user.setIsActive(false);
+		
+		userRepository.save(user);
+		
+		return true;
+	}
+	
+	//ユーザーを利用可能にする
+	public boolean activateUser(Long userId) {
+		
+		Optional<User> optionalUser = userRepository.findById(userId);
+		
+		if(optionalUser.isEmpty()) {
+			return false;
+		}
+		
+		User user = optionalUser.get();
+		
+		String userRole = user.getRole();
+		
+		Boolean userIsActive = user.getIsActive();
+		
+		if(userRole.equals("ROLE_ADMIN") || userIsActive == true) {
+			return false;
+		}
+		
+		user.setIsActive(true);
 		
 		userRepository.save(user);
 		

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>レビュー管理</title>
+</head>
+
+<body>
+
+    <h1>レビュー管理</h1>
+
+    <div th:if="${reviews.isEmpty()}">
+        <p>投稿されているレビューはありません。</p>
+    </div>
+    
+    <div th:if="${param.deleteError != null}">
+    	<p>レビューを削除できませんでした。</p>
+	</div>
+
+    <table th:if="${!reviews.isEmpty()}">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>温泉名</th>
+                <th>投稿者</th>
+                <th>メールアドレス</th>
+                <th>タイトル</th>
+                <th>評価</th>
+                <th>コメント</th>
+                <th>投稿日時</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="review : ${reviews}">
+
+                <td th:text="${review.id}"></td>
+                <td th:text="${review.onsen.name}"></td>
+                <td th:text="${review.user.username}"></td>
+                <td th:text="${review.user.email}"></td>
+                <td th:text="${review.title}"></td>
+                <td th:text="${review.rating}"></td>
+                <td th:text="${review.comment}"></td>
+                <td th:text="${review.createdAt}"></td>
+
+                <td>
+   					 <form th:action="@{/admin/reviews/{reviewId}/delete(reviewId=${review.id})}"
+          					method="post"
+          					onsubmit="return confirm('このレビューを削除しますか？');">
+
+				        <button type="submit">削除</button>
+				
+				    </form>
+				</td>
+
+            </tr>
+        </tbody>
+
+    </table>
+
+    <a th:href="@{/admin}">
+        管理者メニューへ戻る
+    </a>
+
+</body>
+
+</html>

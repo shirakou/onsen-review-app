@@ -55,4 +55,28 @@ public class ReviewService {
 		
 		return reviews;
 	}
+	
+	//全件取得
+	public List<Review> getAllReviews() {
+		
+		List<Review> reviews = reviewRepository.findAll();
+		
+		return reviews;
+	}
+	
+	//対象のレビューの削除
+	public boolean deleteReviewById(Long reviewId) {
+		
+		Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+		
+		if(optionalReview.isEmpty()) {
+			return false;
+		}
+		
+		Review review = optionalReview.get();
+		
+		reviewRepository.delete(review);
+		
+		return true;
+	}
 }

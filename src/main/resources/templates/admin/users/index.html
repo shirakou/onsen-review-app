@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ユーザー管理</title>
+</head>
+
+<body>
+
+    <h1>ユーザー管理</h1>
+
+	<div th:if="${users.isEmpty()}">
+		<p>登録されているユーザーはいません。</p>
+	</div>
+	
+	<div th:if="${param.statusError != null}">
+    	<p>ユーザーの状態を変更できませんでした。</p>
+	</div>
+	
+    <table th:if="${!users.isEmpty()}">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ユーザー名</th>
+                <th>メールアドレス</th>
+                <th>権限</th>
+                <th>利用状況</th>
+                <th>登録日時</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="user : ${users}">
+
+                <td th:text="${user.id}"></td>
+
+                <td th:text="${user.username}"></td>
+
+                <td th:text="${user.email}"></td>
+
+                <td th:text="${user.role}"></td>
+
+                <td th:text="${user.isActive ? '利用中' : '利用停止'}"></td>
+                
+                <td th:text="${user.createdAt}"></td>
+                
+                <td>
+                	<form th:if="${user.isActive and user.role != 'ROLE_ADMIN'}"
+                	th:action="@{/admin/users/{userId}/deactivate(userId=${user.id})}"
+                	method="post"
+                	onsubmit="return confirm('このユーザーを利用停止にしますか?')">
+                	
+                	<button type="submit">利用停止</button>
+                	
+                	</form>
+                	
+                	 <form th:if="${!user.isActive and user.role != 'ROLE_ADMIN'}"
+         			th:action="@{/admin/users/{userId}/activate(userId=${user.id})}"
+         			method="post"
+          			onsubmit="return confirm('このユーザーを再有効化しますか？');">
+
+        			<button type="submit">再有効化</button>
+
+    				</form>
+                </td>
+
+            </tr>
+        </tbody>
+
+    </table>
+
+    <a th:href="@{/admin}">
+        管理者メニューへ戻る
+    </a>
+
+</body>
+
+</html>
