@@ -107,6 +107,20 @@
         </p>
     </div>
     
+<!-- 平均評価 -->
+<div>
+    <h2>平均評価</h2>
+
+    <p th:if="${reviews.isEmpty()}">
+        まだ評価はありません。
+    </p>
+
+    <p th:if="${!reviews.isEmpty()}">
+        <span th:text="${#numbers.formatDecimal(averageRating, 1, 1)}"></span>
+        / 5.0
+    </p>
+</div>    
+    
     <!-- お気に入り -->
 <div sec:authorize="isAuthenticated()">
 

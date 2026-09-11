@@ -94,6 +94,10 @@ public class HomeController {
 		//指定した温泉のレビュー一覧を取得
 		List<Review> reviews = reviewService.getReviewsByOnsenId(onsenId);
 		
+		double averageRating = reviewService.calculateAverageRating(reviews);
+		
+		model.addAttribute("averageRating", averageRating);
+		
 		model.addAttribute("reviews", reviews);
 		model.addAttribute("onsen", detailOnsen);
 		model.addAttribute("reviewForm", new ReviewForm());
@@ -118,19 +122,27 @@ public class HomeController {
 		
 		Onsen targetOnsen = onsen.get();
 		
+		// ここに追加
+		String email = authenticator.getName();
+
+		boolean isFavorite =
+		        favoriteService.isFavorite(email, onsenId);
+
+		model.addAttribute("isFavorite", isFavorite);
+		
 		if (bindingResult.hasErrors()) {
 			
 			List<Review> reviews =
 		            reviewService.getReviewsByOnsenId(onsenId);
+			
+			double averageRating = reviewService.calculateAverageRating(reviews);
+			model.addAttribute("averageRating", averageRating);
 			
 			model.addAttribute("onsen", targetOnsen);
 			model.addAttribute("reviews", reviews);
 			
 			return "onsen/detail";
 		}
-		
-		// ログインユーザーのメールアドレスを取得
-		String email = authenticator.getName();
 		
 		// メールアドレスからログインユーザーを取得
 		Optional<User> user = userService.getUserByEmail(email);
@@ -146,6 +158,9 @@ public class HomeController {
 			
 		    List<Review> reviews =
 		            reviewService.getReviewsByOnsenId(onsenId);
+		    
+		    double averageRating = reviewService.calculateAverageRating(reviews);
+		    model.addAttribute("averageRating", averageRating);
 		    
 			model.addAttribute("onsen", targetOnsen);
 			

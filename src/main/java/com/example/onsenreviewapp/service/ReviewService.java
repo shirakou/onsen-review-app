@@ -79,4 +79,21 @@ public class ReviewService {
 		
 		return true;
 	}
+	
+	//レビュー一覧から平均評価を取得する
+	public double calculateAverageRating(
+			List<Review> reviews) {
+		
+		if(reviews.isEmpty()) {
+			return 0.0;
+		}
+		
+		double totalRating = 0.0;
+		
+		for(Review review : reviews) {
+			totalRating += review.getRating();
+		}
+		
+		return totalRating / reviews.size();
+	}
 }
