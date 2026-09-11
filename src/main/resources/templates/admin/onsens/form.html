@@ -1,224 +1,501 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
 
     <title th:text="${onsenId == null} ? '温泉登録' : '温泉編集'">
         温泉登録
     </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <h1 th:text="${onsenId == null} ? '温泉登録' : '温泉編集'">
-        温泉登録
-    </h1>
+<div th:replace="~{fragments/header :: header}"></div>
 
-    <form th:action="${onsenId == null}
-            ? @{/admin/onsens/new}
-            : @{/admin/onsens/{id}/edit(id=${onsenId})}"
-          method="post"
-          th:object="${onsenForm}">
+<main class="container py-5">
 
-        <div>
-            <label for="name">温泉名</label>
+    <div class="row justify-content-center">
 
-            <input type="text"
-                   id="name"
-                   th:field="*{name}">
+        <div class="col-xl-10">
 
-            <p th:errors="*{name}"></p>
-        </div>
+            <div class="card border-0 shadow-sm">
 
-        <div>
-            <label for="imageUrl">画像URL</label>
+                <div class="card-body p-4 p-md-5">
 
-            <input type="url"
-                   id="imageUrl"
-                   th:field="*{imageUrl}">
+                    <h1 class="h2 mb-4"
+                        th:text="${onsenId == null} ? '温泉登録' : '温泉編集'">
+                        温泉登録
+                    </h1>
 
-            <p th:errors="*{imageUrl}"></p>
-        </div>
+                    <form th:action="${onsenId == null}
+                            ? @{/admin/onsens/new}
+                            : @{/admin/onsens/{id}/edit(id=${onsenId})}"
+                          method="post"
+                          th:object="${onsenForm}">
 
-        <div>
-            <label for="prefecture">都道府県</label>
+                        <!-- 基本情報 -->
+                        <h2 class="h5 border-bottom pb-2 mb-4">
+                            基本情報
+                        </h2>
 
-            <input type="text"
-                   id="prefecture"
-                   th:field="*{prefecture}">
+                        <div class="row g-3 mb-4">
 
-            <p th:errors="*{prefecture}"></p>
-        </div>
+                            <div class="col-md-6">
 
-        <div>
-            <label for="address">住所</label>
+                                <label class="form-label"
+                                       for="name">
+                                    温泉名
+                                </label>
 
-            <input type="text"
-                   id="address"
-                   th:field="*{address}">
+                                <input class="form-control"
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                       type="text"
+                                       id="name"
+                                       th:field="*{name}">
 
-            <p th:errors="*{address}"></p>
-        </div>
+                                <div class="invalid-feedback"
+                                     th:errors="*{name}">
+                                </div>
 
-        <div>
-            <label for="phone">電話番号</label>
+                            </div>
 
-            <input type="tel"
-                   id="phone"
-                   th:field="*{phone}">
+                            <div class="col-md-6">
 
-            <p th:errors="*{phone}"></p>
-        </div>
+                                <label class="form-label"
+                                       for="imageUrl">
+                                    画像URL
+                                </label>
 
-        <div>
-            <label for="businessHours">営業時間</label>
+                                <input class="form-control"
+                                       th:classappend="${#fields.hasErrors('imageUrl')} ? 'is-invalid'"
+                                       type="url"
+                                       id="imageUrl"
+                                       th:field="*{imageUrl}">
 
-            <input type="text"
-                   id="businessHours"
-                   th:field="*{businessHours}">
+                                <div class="invalid-feedback"
+                                     th:errors="*{imageUrl}">
+                                </div>
 
-            <p th:errors="*{businessHours}"></p>
-        </div>
+                            </div>
 
-        <div>
-            <label for="holiday">定休日</label>
+                            <div class="col-md-4">
 
-            <input type="text"
-                   id="holiday"
-                   th:field="*{holiday}">
+                                <label class="form-label"
+                                       for="prefecture">
+                                    都道府県
+                                </label>
 
-            <p th:errors="*{holiday}"></p>
-        </div>
+                                <input class="form-control"
+                                       th:classappend="${#fields.hasErrors('prefecture')} ? 'is-invalid'"
+                                       type="text"
+                                       id="prefecture"
+                                       th:field="*{prefecture}">
 
-        <div>
-            <label for="adultPrice">大人料金</label>
+                                <div class="invalid-feedback"
+                                     th:errors="*{prefecture}">
+                                </div>
 
-            <input type="number"
-                   id="adultPrice"
-                   min="0"
-                   th:field="*{adultPrice}">
+                            </div>
 
-            <p th:errors="*{adultPrice}"></p>
-        </div>
+                            <div class="col-md-8">
 
-        <div>
-            <label for="childPrice">子供料金</label>
+                                <label class="form-label"
+                                       for="address">
+                                    住所
+                                </label>
 
-            <input type="number"
-                   id="childPrice"
-                   min="0"
-                   th:field="*{childPrice}">
+                                <input class="form-control"
+                                       th:classappend="${#fields.hasErrors('address')} ? 'is-invalid'"
+                                       type="text"
+                                       id="address"
+                                       th:field="*{address}">
 
-            <p th:errors="*{childPrice}"></p>
-        </div>
+                                <div class="invalid-feedback"
+                                     th:errors="*{address}">
+                                </div>
 
-        <div>
-            <label for="nearestStation">最寄り駅</label>
+                            </div>
 
-            <input type="text"
-                   id="nearestStation"
-                   th:field="*{nearestStation}">
+                            <div class="col-md-6">
 
-            <p th:errors="*{nearestStation}"></p>
-        </div>
+                                <label class="form-label"
+                                       for="phone">
+                                    電話番号
+                                </label>
 
-        <div>
-            <label for="stationTime">駅からの時間（分）</label>
+                                <input class="form-control"
+                                       th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'"
+                                       type="tel"
+                                       id="phone"
+                                       th:field="*{phone}">
 
-            <input type="number"
-                   id="stationTime"
-                   min="0"
-                   th:field="*{stationTime}">
+                                <div class="invalid-feedback"
+                                     th:errors="*{phone}">
+                                </div>
 
-            <p th:errors="*{stationTime}"></p>
-        </div>
+                            </div>
 
-        <fieldset>
-            <legend>設備</legend>
+                            <div class="col-md-6">
 
-            <div>
-                <input type="checkbox"
-                       id="familyBath"
-                       th:field="*{familyBath}">
+                                <label class="form-label"
+                                       for="businessHours">
+                                    営業時間
+                                </label>
 
-                <label for="familyBath">家族風呂</label>
+                                <input class="form-control"
+                                       th:classappend="${#fields.hasErrors('businessHours')} ? 'is-invalid'"
+                                       type="text"
+                                       id="businessHours"
+                                       th:field="*{businessHours}">
+
+                                <div class="invalid-feedback"
+                                     th:errors="*{businessHours}">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label"
+                                       for="holiday">
+                                    定休日
+                                </label>
+
+                                <input class="form-control"
+                                       th:classappend="${#fields.hasErrors('holiday')} ? 'is-invalid'"
+                                       type="text"
+                                       id="holiday"
+                                       th:field="*{holiday}">
+
+                                <div class="invalid-feedback"
+                                     th:errors="*{holiday}">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- 料金 -->
+                        <h2 class="h5 border-bottom pb-2 mb-4">
+                            料金
+                        </h2>
+
+                        <div class="row g-3 mb-4">
+
+                            <div class="col-md-6">
+
+                                <label class="form-label"
+                                       for="adultPrice">
+                                    大人料金
+                                </label>
+
+                                <div class="input-group">
+
+                                    <input class="form-control"
+                                           th:classappend="${#fields.hasErrors('adultPrice')} ? 'is-invalid'"
+                                           type="number"
+                                           id="adultPrice"
+                                           min="0"
+                                           th:field="*{adultPrice}">
+
+                                    <span class="input-group-text">
+                                        円
+                                    </span>
+
+                                    <div class="invalid-feedback"
+                                         th:errors="*{adultPrice}">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label"
+                                       for="childPrice">
+                                    子ども料金
+                                </label>
+
+                                <div class="input-group">
+
+                                    <input class="form-control"
+                                           th:classappend="${#fields.hasErrors('childPrice')} ? 'is-invalid'"
+                                           type="number"
+                                           id="childPrice"
+                                           min="0"
+                                           th:field="*{childPrice}">
+
+                                    <span class="input-group-text">
+                                        円
+                                    </span>
+
+                                    <div class="invalid-feedback"
+                                         th:errors="*{childPrice}">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- アクセス -->
+                        <h2 class="h5 border-bottom pb-2 mb-4">
+                            アクセス
+                        </h2>
+
+                        <div class="row g-3 mb-4">
+
+                            <div class="col-md-6">
+
+                                <label class="form-label"
+                                       for="nearestStation">
+                                    最寄り駅
+                                </label>
+
+                                <input class="form-control"
+                                       th:classappend="${#fields.hasErrors('nearestStation')} ? 'is-invalid'"
+                                       type="text"
+                                       id="nearestStation"
+                                       th:field="*{nearestStation}">
+
+                                <div class="invalid-feedback"
+                                     th:errors="*{nearestStation}">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label"
+                                       for="stationTime">
+                                    駅からの時間
+                                </label>
+
+                                <div class="input-group">
+
+                                    <input class="form-control"
+                                           th:classappend="${#fields.hasErrors('stationTime')} ? 'is-invalid'"
+                                           type="number"
+                                           id="stationTime"
+                                           min="0"
+                                           th:field="*{stationTime}">
+
+                                    <span class="input-group-text">
+                                        分
+                                    </span>
+
+                                    <div class="invalid-feedback"
+                                         th:errors="*{stationTime}">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- 設備 -->
+                        <fieldset class="mb-4">
+
+                            <legend class="h5 border-bottom pb-2 mb-4">
+                                設備
+                            </legend>
+
+                            <div class="row g-3">
+
+                                <div class="col-sm-6 col-md-4">
+
+                                    <div class="form-check">
+
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="familyBath"
+                                               th:field="*{familyBath}">
+
+                                        <label class="form-check-label"
+                                               for="familyBath">
+                                            家族風呂
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 col-md-4">
+
+                                    <div class="form-check">
+
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="sauna"
+                                               th:field="*{sauna}">
+
+                                        <label class="form-check-label"
+                                               for="sauna">
+                                            サウナ
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 col-md-4">
+
+                                    <div class="form-check">
+
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="openAirBath"
+                                               th:field="*{openAirBath}">
+
+                                        <label class="form-check-label"
+                                               for="openAirBath">
+                                            露天風呂
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 col-md-4">
+
+                                    <div class="form-check">
+
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="restaurant"
+                                               th:field="*{restaurant}">
+
+                                        <label class="form-check-label"
+                                               for="restaurant">
+                                            食事処
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 col-md-4">
+
+                                    <div class="form-check">
+
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="alcohol"
+                                               th:field="*{alcohol}">
+
+                                        <label class="form-check-label"
+                                               for="alcohol">
+                                            アルコール
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 col-md-4">
+
+                                    <div class="form-check">
+
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="towelRental"
+                                               th:field="*{towelRental}">
+
+                                        <label class="form-check-label"
+                                               for="towelRental">
+                                            タオル貸出
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 col-md-4">
+
+                                    <div class="form-check">
+
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="parking"
+                                               th:field="*{parking}">
+
+                                        <label class="form-check-label"
+                                               for="parking">
+                                            駐車場
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </fieldset>
+
+                        <!-- 説明 -->
+                        <div class="mb-4">
+
+                            <label class="form-label"
+                                   for="description">
+                                説明
+                            </label>
+
+                            <textarea class="form-control"
+                                      th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"
+                                      id="description"
+                                      rows="6"
+                                      th:field="*{description}">
+                            </textarea>
+
+                            <div class="invalid-feedback"
+                                 th:errors="*{description}">
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button class="btn btn-primary"
+                                    type="submit"
+                                    th:text="${onsenId == null} ? '登録する' : '更新する'">
+                                登録する
+                            </button>
+
+                            <a class="btn btn-outline-secondary"
+                               th:href="@{/admin/onsens}">
+                                温泉管理一覧へ戻る
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
             </div>
 
-            <div>
-                <input type="checkbox"
-                       id="sauna"
-                       th:field="*{sauna}">
-
-                <label for="sauna">サウナ</label>
-            </div>
-
-            <div>
-                <input type="checkbox"
-                       id="openAirBath"
-                       th:field="*{openAirBath}">
-
-                <label for="openAirBath">露天風呂</label>
-            </div>
-
-            <div>
-                <input type="checkbox"
-                       id="restaurant"
-                       th:field="*{restaurant}">
-
-                <label for="restaurant">食事処</label>
-            </div>
-
-            <div>
-                <input type="checkbox"
-                       id="alcohol"
-                       th:field="*{alcohol}">
-
-                <label for="alcohol">アルコール</label>
-            </div>
-
-            <div>
-                <input type="checkbox"
-                       id="towelRental"
-                       th:field="*{towelRental}">
-
-                <label for="towelRental">タオル貸出</label>
-            </div>
-
-            <div>
-                <input type="checkbox"
-                       id="parking"
-                       th:field="*{parking}">
-
-                <label for="parking">駐車場</label>
-            </div>
-        </fieldset>
-
-        <div>
-            <label for="description">説明</label>
-
-            <textarea id="description"
-                      rows="6"
-                      th:field="*{description}">
-            </textarea>
-
-            <p th:errors="*{description}"></p>
         </div>
 
-        <div>
-            <button type="submit"
-                    th:text="${onsenId == null} ? '登録する' : '更新する'">
-                登録する
-            </button>
-        </div>
+    </div>
 
-    </form>
+</main>
 
-    <a th:href="@{/admin/onsens}">
-        温泉管理一覧へ戻る
-    </a>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+</script>
 
 </body>
-
 </html>

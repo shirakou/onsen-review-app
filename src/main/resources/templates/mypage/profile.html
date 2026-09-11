@@ -1,41 +1,90 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
     <title>プロフィール編集</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <h1>プロフィール編集</h1>
+<div th:replace="~{fragments/header :: header}"></div>
 
-    <form th:action="@{/mypage/profile}"
-          method="post"
-          th:object="${profileForm}">
+<main class="container py-5">
 
-        <div>
+    <div class="row justify-content-center">
 
-            <label for="username">ユーザー名</label>
+        <div class="col-md-8 col-lg-6">
 
-            <!-- usernameの入力欄をここに書く -->
-			<input type="text"
-				id="username"
-				th:field="*{username}">
+            <div class="card border-0 shadow-sm">
 
-            <!-- usernameのエラー表示をここに書く -->
-			<p th:if="${#fields.hasErrors('username')}"
-				th:errors="*{username}">
-			</p>
-		</div>
+                <div class="card-body p-4 p-md-5">
 
-        <button type="submit">更新</button>
+                    <h1 class="h3 text-center mb-4">
+                        プロフィール編集
+                    </h1>
 
-    </form>
+                    <form th:action="@{/mypage/profile}"
+                          method="post"
+                          th:object="${profileForm}">
 
-    <a th:href="@{/mypage}">マイページへ戻る</a>
+                        <div class="mb-4">
+
+                            <label class="form-label"
+                                   for="username">
+                                ユーザー名
+                            </label>
+
+                            <input class="form-control"
+                                   th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
+                                   type="text"
+                                   id="username"
+                                   th:field="*{username}">
+
+                            <div class="invalid-feedback"
+                                 th:errors="*{username}">
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-primary w-100"
+                                type="submit">
+                            更新する
+                        </button>
+
+                    </form>
+
+                    <div class="text-center mt-4">
+
+                        <a th:href="@{/mypage}">
+                            マイページへ戻る
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+</script>
 
 </body>
-
 </html>

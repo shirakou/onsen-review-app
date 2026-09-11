@@ -1,79 +1,155 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
     <title>温泉管理</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <h1>温泉管理</h1>
+<div th:replace="~{fragments/header :: header}"></div>
 
-    <a th:href="@{/admin/onsens/new}">
-        温泉を新規登録
-    </a>
-    
-    <div th:if="${param.deleteError != null}">
-    	<p>レビューまたはお気に入りが存在するため削除できません。</p>
+<main class="container py-5">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div>
+
+            <h1 class="h2 fw-bold mb-1">
+                温泉管理
+            </h1>
+
+            <p class="text-secondary mb-0">
+                温泉情報の登録・編集・削除ができます。
+            </p>
+
+        </div>
+
+        <a class="btn btn-primary"
+           th:href="@{/admin/onsens/new}">
+            温泉を新規登録
+        </a>
+
     </div>
 
-    <div th:if="${onsens.isEmpty()}">
-        <p>登録されている温泉はありません。</p>
+    <!-- 削除エラー -->
+    <div class="alert alert-danger"
+         th:if="${param.deleteError != null}">
+
+        レビューまたはお気に入りが存在するため削除できません。
+
     </div>
 
-    <table th:if="${!onsens.isEmpty()}">
+    <!-- 温泉が0件の場合 -->
+    <div class="alert alert-secondary"
+         th:if="${onsens.isEmpty()}">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>温泉名</th>
-                <th>都道府県</th>
-                <th>住所</th>
-                <th>最終更新日時</th>
-                <th>操作</th>
-            </tr>
-        </thead>
+        登録されている温泉はありません。
 
-        <tbody>
-            <tr th:each="onsen : ${onsens}">
+    </div>
 
-                <td th:text="${onsen.id}"></td>
+    <!-- 温泉一覧 -->
+    <div class="card border-0 shadow-sm"
+         th:if="${!onsens.isEmpty()}">
 
-                <td th:text="${onsen.name}"></td>
+        <div class="table-responsive">
 
-                <td th:text="${onsen.prefecture}"></td>
+            <table class="table table-hover align-middle mb-0">
 
-                <td th:text="${onsen.address}"></td>
+                <thead class="table-light">
 
-                <td th:text="${onsen.updatedAt}"></td>
+                    <tr>
 
-                <td>
-                    <a th:href="@{/admin/onsens/{id}/edit(id=${onsen.id})}">
-                        編集
-                    </a>
+                        <th scope="col">ID</th>
+                        <th scope="col">温泉名</th>
+                        <th scope="col">都道府県</th>
+                        <th scope="col">住所</th>
+                        <th scope="col">最終更新日時</th>
+                        <th scope="col">操作</th>
 
-                    <form th:action="@{/admin/onsens/{id}/delete(id=${onsen.id})}"
-                          method="post"
-                          onsubmit="return confirm('本当に削除しますか？');">
+                    </tr>
 
-                        <button type="submit">
-                            削除
-                        </button>
+                </thead>
 
-                    </form>
-                </td>
+                <tbody>
 
-            </tr>
-        </tbody>
+                    <tr th:each="onsen : ${onsens}">
 
-    </table>
+                        <td th:text="${onsen.id}">
+                        </td>
 
-    <a th:href="@{/admin}">
-        管理者メニューへ戻る
-    </a>
+                        <td class="fw-semibold"
+                            th:text="${onsen.name}">
+                        </td>
+
+                        <td th:text="${onsen.prefecture}">
+                        </td>
+
+                        <td th:text="${onsen.address}">
+                        </td>
+
+                        <td th:text="${#temporals.format(onsen.updatedAt, 'yyyy/MM/dd HH:mm')}">
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex flex-wrap gap-2">
+
+                                <a class="btn btn-outline-primary btn-sm"
+                                   th:href="@{/admin/onsens/{id}/edit(id=${onsen.id})}">
+                                    編集
+                                </a>
+
+                                <form th:action="@{/admin/onsens/{id}/delete(id=${onsen.id})}"
+                                      method="post"
+                                      onsubmit="return confirm('本当にこの温泉を削除しますか？');">
+
+                                    <button class="btn btn-outline-danger btn-sm"
+                                            type="submit">
+                                        削除
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="mt-4">
+
+        <a class="btn btn-outline-secondary"
+           th:href="@{/admin}">
+            管理者メニューへ戻る
+        </a>
+
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+</script>
 
 </body>
-
 </html>

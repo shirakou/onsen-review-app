@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+<nav th:fragment="header"
+     class="navbar navbar-dark bg-dark">
+
+    <div class="container py-2">
+
+        <a class="navbar-brand fw-bold"
+           th:href="@{/}">
+            温泉レビュー
+        </a>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <div sec:authorize="isAnonymous()"
+                 class="d-flex gap-2">
+
+                <a class="btn btn-outline-light btn-sm"
+                   th:href="@{/login}">
+                    ログイン
+                </a>
+
+                <a class="btn btn-primary btn-sm"
+                   th:href="@{/signup}">
+                    新規登録
+                </a>
+
+            </div>
+
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')"
+               class="btn btn-warning btn-sm"
+               th:href="@{/admin}">
+                管理者メニュー
+            </a>
+
+            <div sec:authorize="isAuthenticated()"
+                 class="d-flex gap-2">
+
+                <a class="btn btn-outline-light btn-sm"
+                   th:href="@{/mypage}">
+                    マイページ
+                </a>
+
+                <form th:action="@{/logout}"
+                      method="post">
+
+                    <button class="btn btn-danger btn-sm"
+                            type="submit">
+                        ログアウト
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+</body>
+</html>

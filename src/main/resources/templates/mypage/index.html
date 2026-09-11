@@ -1,81 +1,234 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
     <title>マイページ</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <h1>マイページ</h1>
+<div th:replace="~{fragments/header :: header}"></div>
 
-	<a th:href="@{/mypage/profile}">プロフィール編集</a>
+<main class="container py-5">
 
-    <h2>お気に入り一覧</h2>
+    <div class="d-flex flex-wrap
+                justify-content-between
+                align-items-center
+                gap-3 mb-4">
 
-    <!-- お気に入りが0件の場合の表示をここに書く -->
-<div th:if="${favorites.isEmpty()}">
-	<p>お気に入り登録した温泉はありません。</p>
-</div>
+        <h1 class="h2 mb-0">
+            マイページ
+        </h1>
 
-    <!-- お気に入り一覧の繰り返し表示をここに書く -->
-<div th:each="favorite : ${favorites}">
-	
-	<p>
-		温泉名：
-		<span th:text="${favorite.onsen.name}"></span>
-	</p>
-	
-	<a th:href="@{/onsens/{onsenId}(onsenId=${favorite.onsen.id})}">
-		詳細
-	</a>
-	
-</div>
+        <a class="btn btn-outline-primary"
+           th:href="@{/mypage/profile}">
+            プロフィール編集
+        </a>
 
-	<h2>レビュー履歴</h2>
+    </div>
 
-<div th:if="${reviews.isEmpty()}">
-    <p>レビュー履歴が存在しません。</p>
-</div>
+    <div class="row g-4">
 
-<div th:each="review : ${reviews}">
-    <p>
-        温泉名：
-        <span th:text="${review.onsen.name}"></span>
-    </p>
+        <!-- お気に入り一覧 -->
+        <div class="col-lg-5">
 
-    <p>
-        タイトル：
-        <span th:text="${review.title}"></span>
-    </p>
+            <section class="card border-0 shadow-sm h-100">
 
-    <p>
-        評価：
-        <span th:text="${review.rating}"></span>
-    </p>
+                <div class="card-body p-4">
 
-    <p>
-        コメント：
-        <span th:text="${review.comment}"></span>
-    </p>
+                    <h2 class="h4 mb-4">
+                        お気に入り一覧
+                    </h2>
 
-    <a th:href="@{/reviews/{id}/edit(id=${review.id})}">
-        編集
-    </a>
-</div>
+                    <div th:if="${favorites.isEmpty()}"
+                         class="alert alert-secondary mb-0">
 
-    <a th:href="@{/}">一覧へ戻る</a>
-    
-    <form th:action="@{/mypage/withdraw}"
-    method="post"
-    onsubmit="return confirm('本当に退会しますか?');">
-    
-    <button type="submit">退会する</button>
-    
-    </form>
+                        お気に入り登録した温泉はありません。
+
+                    </div>
+
+                    <div th:if="${!favorites.isEmpty()}"
+                         class="list-group list-group-flush">
+
+                        <div th:each="favorite : ${favorites}"
+                             class="list-group-item px-0 py-3">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-center
+                                        gap-3">
+
+                                <div>
+
+                                    <div class="fw-bold"
+                                         th:text="${favorite.onsen.name}">
+                                        温泉名
+                                    </div>
+
+                                    <small class="text-secondary"
+                                           th:text="${favorite.onsen.prefecture}">
+                                        都道府県
+                                    </small>
+
+                                </div>
+
+                                <a class="btn btn-outline-primary btn-sm"
+                                   th:href="@{/onsens/{onsenId}(onsenId=${favorite.onsen.id})}">
+                                    詳細
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- レビュー履歴 -->
+        <div class="col-lg-7">
+
+            <section>
+
+                <h2 class="h4 mb-4">
+                    レビュー履歴
+                </h2>
+
+                <div th:if="${reviews.isEmpty()}"
+                     class="alert alert-secondary">
+
+                    レビュー履歴が存在しません。
+
+                </div>
+
+                <article th:each="review : ${reviews}"
+                         class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex
+                                    justify-content-between
+                                    align-items-start
+                                    gap-3 mb-3">
+
+                            <div>
+
+                                <small class="text-secondary">
+                                    温泉名
+                                </small>
+
+                                <h3 class="h5 mb-0"
+                                    th:text="${review.onsen.name}">
+                                    温泉名
+                                </h3>
+
+                            </div>
+
+                            <span class="badge text-bg-primary fs-6">
+
+                                評価
+
+                                <span th:text="${review.rating}">
+                                    0
+                                </span>
+
+                                / 5
+
+                            </span>
+
+                        </div>
+
+                        <h4 class="h6"
+                            th:text="${review.title}">
+                            タイトル
+                        </h4>
+
+                        <p class="text-secondary"
+                           th:text="${review.comment}">
+                            コメント
+                        </p>
+
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <a class="btn btn-outline-secondary btn-sm"
+                               th:href="@{/onsens/{onsenId}(onsenId=${review.onsen.id})}">
+                                温泉詳細
+                            </a>
+
+                            <a class="btn btn-outline-primary btn-sm"
+                               th:href="@{/reviews/{id}/edit(id=${review.id})}">
+                                編集
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+        </div>
+
+    </div>
+
+    <!-- 退会 -->
+    <section class="card border-danger mt-5">
+
+        <div class="card-body p-4">
+
+            <h2 class="h5 text-danger">
+                アカウントの退会
+            </h2>
+
+            <p class="text-secondary">
+                退会すると、このアカウントではログインできなくなります。
+            </p>
+
+            <form th:action="@{/mypage/withdraw}"
+                  method="post"
+                  onsubmit="return confirm('本当に退会しますか？');">
+
+                <button class="btn btn-outline-danger"
+                        type="submit">
+                    退会する
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <div class="mt-4">
+
+        <a th:href="@{/}">
+            ホームへ戻る
+        </a>
+
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+</script>
 
 </body>
-
 </html>

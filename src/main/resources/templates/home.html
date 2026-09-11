@@ -1,109 +1,340 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
     <title>温泉レビューアプリ</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            color: white;
+        }
+
+        .onsen-image {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>温泉レビューアプリ</h1>
+<nav class="navbar navbar-dark bg-dark">
 
-    <h2>温泉検索</h2>
+    <div class="container py-2">
 
-    <!-- 温泉名検索 -->
-    <form th:action="@{/}" method="get">
-        <label for="name">温泉名</label>
+        <a class="navbar-brand fw-bold"
+           th:href="@{/}">
+            温泉レビュー
+        </a>
 
-        <!--　name="name"がHomeControllerの
-        @RequestParam(required = false) String nameに入る
-        -->
-        <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="温泉名を入力">
+        <div class="d-flex align-items-center gap-2">
 
-        <button type="submit">検索</button>
-    </form>
+            <!-- 未ログイン時 -->
+            <div sec:authorize="isAnonymous()"
+                 class="d-flex gap-2">
 
-    <!-- 都道府県検索 -->
-    <form th:action="@{/}" method="get">
+                <a class="btn btn-outline-light btn-sm"
+                   th:href="@{/login}">
+                    ログイン
+                </a>
 
-        <label for="prefecture">都道府県</label>
+                <a class="btn btn-primary btn-sm"
+                   th:href="@{/signup}">
+                    新規登録
+                </a>
 
-        <select id="prefecture" name="prefecture">
-            <option value="">都道府県を選択</option>
-            <option value="北海道">北海道</option>
-            <option value="青森県">青森県</option>
-            <option value="岩手県">岩手県</option>
-            <option value="宮城県">宮城県</option>
-            <option value="秋田県">秋田県</option>
-            <option value="山形県">山形県</option>
-            <option value="福島県">福島県</option>
-            <option value="茨城県">茨城県</option>
-            <option value="栃木県">栃木県</option>
-            <option value="群馬県">群馬県</option>
-            <option value="埼玉県">埼玉県</option>
-            <option value="千葉県">千葉県</option>
-            <option value="東京都">東京都</option>
-            <option value="神奈川県">神奈川県</option>
-            <option value="新潟県">新潟県</option>
-            <option value="富山県">富山県</option>
-            <option value="石川県">石川県</option>
-            <option value="福井県">福井県</option>
-            <option value="山梨県">山梨県</option>
-            <option value="長野県">長野県</option>
-            <option value="岐阜県">岐阜県</option>
-            <option value="静岡県">静岡県</option>
-            <option value="愛知県">愛知県</option>
-            <option value="三重県">三重県</option>
-            <option value="滋賀県">滋賀県</option>
-            <option value="京都府">京都府</option>
-            <option value="大阪府">大阪府</option>
-            <option value="兵庫県">兵庫県</option>
-            <option value="奈良県">奈良県</option>
-            <option value="和歌山県">和歌山県</option>
-            <option value="鳥取県">鳥取県</option>
-            <option value="島根県">島根県</option>
-            <option value="岡山県">岡山県</option>
-            <option value="広島県">広島県</option>
-            <option value="山口県">山口県</option>
-            <option value="徳島県">徳島県</option>
-            <option value="香川県">香川県</option>
-            <option value="愛媛県">愛媛県</option>
-            <option value="高知県">高知県</option>
-            <option value="福岡県">福岡県</option>
-            <option value="佐賀県">佐賀県</option>
-            <option value="長崎県">長崎県</option>
-            <option value="熊本県">熊本県</option>
-            <option value="大分県">大分県</option>
-            <option value="宮崎県">宮崎県</option>
-            <option value="鹿児島県">鹿児島県</option>
-            <option value="沖縄県">沖縄県</option>
-        </select>
+            </div>
 
-        <button type="submit">検索</button>
+            <!-- 管理者のみ -->
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')"
+               class="btn btn-warning btn-sm"
+               th:href="@{/admin}">
+                管理者メニュー
+            </a>
 
-    </form>
+            <!-- ログイン時 -->
+            <div sec:authorize="isAuthenticated()"
+                 class="d-flex gap-2">
 
-    <h2>温泉一覧</h2>
+                <a class="btn btn-outline-light btn-sm"
+                   th:href="@{/mypage}">
+                    マイページ
+                </a>
 
-    <div th:each="onsen : ${onsens}">
-        <p th:text="${onsen.name}"></p>
-        <p th:text="${onsen.prefecture}"></p>
-	    <!-- 選択した温泉のIDをURLに入れて詳細画面へ遷移 -->
-	    <a th:href="@{/onsens/{onsenId}(onsenId=${onsen.id})}">詳細</a>
+                <form th:action="@{/logout}"
+                      method="post">
+
+                    <button class="btn btn-danger btn-sm"
+                            type="submit">
+                        ログアウト
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div sec:authorize="isAuthenticated()">
-    
-    	<a th:href="@{/mypage}">マイページ</a>
-    	
-	   	<form th:action="@{/logout}" method="post">
-	        <button type="submit">ログアウト</button>
-	    </form>
+</nav>
+
+<header class="hero py-5">
+
+    <div class="container text-center">
+
+        <h1 class="display-5 fw-bold">
+            温泉レビューアプリ
+        </h1>
+
+        <p class="lead mb-0">
+            お気に入りの温泉を探して、体験を共有しよう
+        </p>
+
     </div>
+
+</header>
+
+<main class="container py-5">
+
+    <!-- 温泉検索 -->
+    <section class="card border-0 shadow-sm mb-5">
+
+        <div class="card-body p-4">
+
+            <h2 class="h4 mb-4">
+                温泉を検索
+            </h2>
+
+            <div class="row g-4">
+
+                <!-- 温泉名検索 -->
+                <div class="col-md-6">
+
+                    <form th:action="@{/}"
+                          method="get">
+
+                        <label class="form-label"
+                               for="name">
+                            温泉名
+                        </label>
+
+                        <div class="input-group">
+
+                            <input class="form-control"
+                                   type="text"
+                                   id="name"
+                                   name="name"
+                                   th:value="${param.name}"
+                                   placeholder="温泉名を入力">
+
+                            <button class="btn btn-primary"
+                                    type="submit">
+                                検索
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- 都道府県検索 -->
+                <div class="col-md-6">
+
+                    <form th:action="@{/}"
+                          method="get">
+
+                        <label class="form-label"
+                               for="prefecture">
+                            都道府県
+                        </label>
+
+                        <div class="input-group">
+
+                            <select class="form-select"
+                                    id="prefecture"
+                                    name="prefecture">
+
+                                <option value="">都道府県を選択</option>
+                                <option value="北海道">北海道</option>
+                                <option value="青森県">青森県</option>
+                                <option value="岩手県">岩手県</option>
+                                <option value="宮城県">宮城県</option>
+                                <option value="秋田県">秋田県</option>
+                                <option value="山形県">山形県</option>
+                                <option value="福島県">福島県</option>
+                                <option value="茨城県">茨城県</option>
+                                <option value="栃木県">栃木県</option>
+                                <option value="群馬県">群馬県</option>
+                                <option value="埼玉県">埼玉県</option>
+                                <option value="千葉県">千葉県</option>
+                                <option value="東京都">東京都</option>
+                                <option value="神奈川県">神奈川県</option>
+                                <option value="新潟県">新潟県</option>
+                                <option value="富山県">富山県</option>
+                                <option value="石川県">石川県</option>
+                                <option value="福井県">福井県</option>
+                                <option value="山梨県">山梨県</option>
+                                <option value="長野県">長野県</option>
+                                <option value="岐阜県">岐阜県</option>
+                                <option value="静岡県">静岡県</option>
+                                <option value="愛知県">愛知県</option>
+                                <option value="三重県">三重県</option>
+                                <option value="滋賀県">滋賀県</option>
+                                <option value="京都府">京都府</option>
+                                <option value="大阪府">大阪府</option>
+                                <option value="兵庫県">兵庫県</option>
+                                <option value="奈良県">奈良県</option>
+                                <option value="和歌山県">和歌山県</option>
+                                <option value="鳥取県">鳥取県</option>
+                                <option value="島根県">島根県</option>
+                                <option value="岡山県">岡山県</option>
+                                <option value="広島県">広島県</option>
+                                <option value="山口県">山口県</option>
+                                <option value="徳島県">徳島県</option>
+                                <option value="香川県">香川県</option>
+                                <option value="愛媛県">愛媛県</option>
+                                <option value="高知県">高知県</option>
+                                <option value="福岡県">福岡県</option>
+                                <option value="佐賀県">佐賀県</option>
+                                <option value="長崎県">長崎県</option>
+                                <option value="熊本県">熊本県</option>
+                                <option value="大分県">大分県</option>
+                                <option value="宮崎県">宮崎県</option>
+                                <option value="鹿児島県">鹿児島県</option>
+                                <option value="沖縄県">沖縄県</option>
+
+                            </select>
+
+                            <button class="btn btn-primary"
+                                    type="submit">
+                                検索
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="mt-3">
+
+                <a class="btn btn-outline-secondary btn-sm"
+                   th:href="@{/}">
+                    検索条件をクリア
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- 温泉一覧 -->
+    <section>
+
+        <div class="d-flex justify-content-between
+                    align-items-center mb-4">
+
+            <h2 class="h3 mb-0">
+                温泉一覧
+            </h2>
+
+            <span class="text-secondary"
+                  th:text="${onsens.size() + '件'}">
+                0件
+            </span>
+
+        </div>
+
+        <!-- 0件の場合 -->
+        <div th:if="${onsens.isEmpty()}"
+             class="alert alert-secondary">
+
+            条件に一致する温泉はありません。
+
+        </div>
+
+        <!-- 温泉が存在する場合 -->
+        <div th:if="${!onsens.isEmpty()}"
+             class="row g-4">
+
+            <div th:each="onsen : ${onsens}"
+                 class="col-md-6 col-lg-4">
+
+                <article class="card h-100 border-0 shadow-sm">
+
+                    <img class="card-img-top onsen-image"
+                         th:src="${onsen.imageUrl}"
+                         th:alt="${onsen.name}">
+
+                    <div class="card-body d-flex flex-column">
+
+                        <span class="badge text-bg-secondary
+                                     align-self-start mb-2"
+                              th:text="${onsen.prefecture}">
+                            都道府県
+                        </span>
+
+                        <h3 class="h5 card-title"
+                            th:text="${onsen.name}">
+                            温泉名
+                        </h3>
+
+                        <p class="card-text text-secondary"
+                           th:text="${onsen.address}">
+                            住所
+                        </p>
+
+                        <a class="btn btn-primary mt-auto"
+                           th:href="@{/onsens/{onsenId}(onsenId=${onsen.id})}">
+                            詳細を見る
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="bg-dark text-light text-center py-4 mt-5">
+
+    <small>
+        &copy; 2026 温泉レビューアプリ
+    </small>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+</script>
 
 </body>
 </html>

@@ -1,40 +1,159 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
     <title>管理者メニュー</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <h1>管理者メニュー</h1>
+<div th:replace="~{fragments/header :: header}"></div>
 
-    <ul>
-        <li>
-            <a th:href="@{/admin/onsens}">
-                温泉管理
-            </a>
-        </li>
+<main class="container py-5">
 
-        <li>
-            <a th:href="@{/admin/users}">
-                ユーザー管理
-            </a>
-        </li>
+    <div class="mb-5">
 
-        <li>
-            <a th:href="@{/admin/reviews}">
-                レビュー管理
-            </a>
-        </li>
-    </ul>
+        <h1 class="h2 fw-bold">
+            管理者メニュー
+        </h1>
 
-    <a th:href="@{/}">
-        ホームへ戻る
-    </a>
+        <p class="text-secondary mb-0">
+            温泉・ユーザー・レビューを管理できます。
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- 温泉管理 -->
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card h-100 border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="fs-1 mb-3">
+                        ♨️
+                    </div>
+
+                    <h2 class="h4 card-title">
+                        温泉管理
+                    </h2>
+
+                    <p class="card-text text-secondary">
+                        温泉情報の一覧表示・新規登録・編集・削除を行います。
+                    </p>
+
+                </div>
+
+                <div class="card-footer bg-white border-0 p-4 pt-0">
+
+                    <a class="btn btn-primary w-100"
+                       th:href="@{/admin/onsens}">
+                        温泉管理を開く
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ユーザー管理 -->
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card h-100 border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="fs-1 mb-3">
+                        👤
+                    </div>
+
+                    <h2 class="h4 card-title">
+                        ユーザー管理
+                    </h2>
+
+                    <p class="card-text text-secondary">
+                        登録ユーザーの確認・利用停止・再有効化を行います。
+                    </p>
+
+                </div>
+
+                <div class="card-footer bg-white border-0 p-4 pt-0">
+
+                    <a class="btn btn-primary w-100"
+                       th:href="@{/admin/users}">
+                        ユーザー管理を開く
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- レビュー管理 -->
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card h-100 border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="fs-1 mb-3">
+                        ⭐
+                    </div>
+
+                    <h2 class="h4 card-title">
+                        レビュー管理
+                    </h2>
+
+                    <p class="card-text text-secondary">
+                        投稿されたレビューの確認・削除を行います。
+                    </p>
+
+                </div>
+
+                <div class="card-footer bg-white border-0 p-4 pt-0">
+
+                    <a class="btn btn-primary w-100"
+                       th:href="@{/admin/reviews}">
+                        レビュー管理を開く
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="mt-5">
+
+        <a class="btn btn-outline-secondary"
+           th:href="@{/}">
+            ホームへ戻る
+        </a>
+
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+</script>
 
 </body>
-
 </html>
