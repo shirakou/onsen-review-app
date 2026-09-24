@@ -16,58 +16,8 @@
 
 | 管理者メニュー | 温泉管理 |
 | --- | --- |
-| ![管理者メニュー](docs/images/admin-menu.png) | ![温泉管理画面](docs/images/admin-onsens.png) |
+| ![管理者メニュー](docs/images/admin-menu.png) | ![温泉管理画面](docs/images/admin-onsen.png) |
 
-## 環境構築・起動方法
-
-### 前提環境
-
-* Java 17
-* PostgreSQL
-* Git
-
-Maven Wrapperを使用するため、Mavenを別途インストールする必要はありません。
-
-### 1. リポジトリを取得
-
-```bash
-git clone https://github.com/shirakou/onsen-review-app.git
-cd onsen-review-app
-```
-
-### 2. データベースを作成
-
-PostgreSQLで次のデータベースを作成します。
-
-```sql
-CREATE DATABASE onsen_review_app;
-```
-
-### 3. ローカル設定ファイルを作成
-
-`src/main/resources/application-local.properties`を作成し、使用するPostgreSQLの接続情報を設定します。
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/onsen_review_app
-spring.datasource.username=使用するユーザー名
-spring.datasource.password=使用するパスワード
-
-server.servlet.session.timeout=30m
-```
-
-`application-local.properties`は`.gitignore`の対象としており、認証情報はリポジトリに含まれません。
-
-### 4. アプリケーションを起動
-
-```bash
-./mvnw spring-boot:run
-```
-
-起動後、ブラウザで以下へアクセスします。
-
-```text
-http://localhost:8080
-```
 
 ## 使用技術
 
@@ -133,6 +83,57 @@ JUnitとMockitoを使用し、Service層の単体テストを実装していま�
 
 ```bash
 ./mvnw test
+```
+
+## 環境構築・起動方法
+
+### 前提環境
+
+* Java 17
+* PostgreSQL
+* Git
+
+Maven Wrapperを使用するため、Mavenを別途インストールする必要はありません。
+
+### 1. リポジトリを取得
+
+```bash
+git clone https://github.com/shirakou/onsen-review-app.git
+cd onsen-review-app
+```
+
+### 2. データベースを作成
+
+PostgreSQLで次のデータベースを作成します。
+
+```sql
+CREATE DATABASE onsen_review_app;
+```
+
+### 3. ローカル設定ファイルを作成
+
+`src/main/resources/application-local.properties`を作成し、使用するPostgreSQLの接続情報を設定します。
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/onsen_review_app
+spring.datasource.username=使用するユーザー名
+spring.datasource.password=使用するパスワード
+
+server.servlet.session.timeout=30m
+```
+
+`application-local.properties`は`.gitignore`の対象としており、認証情報はリポジトリに含まれません。
+
+### 4. アプリケーションを起動
+
+```bash
+./mvnw spring-boot:run
+```
+
+起動後、ブラウザで以下へアクセスします。
+
+```text
+http://localhost:8080
 ```
 
 ## 学習・実装で苦戦した点
