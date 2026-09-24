@@ -4,6 +4,71 @@
 
 温泉施設の検索、レビュー投稿、お気に入り登録ができるWebアプリです。
 
+## 画面イメージ
+
+| 温泉一覧・検索 | 温泉詳細 |
+| --- | --- |
+| ![温泉一覧・検索画面](docs/images/home.png) | ![温泉詳細画面](docs/images/onsen-detail.png) |
+
+| レビュー投稿・一覧 | マイページ |
+| --- | --- |
+| ![レビュー投稿・一覧画面](docs/images/review.png) | ![マイページ](docs/images/mypage.png) |
+
+| 管理者メニュー | 温泉管理 |
+| --- | --- |
+| ![管理者メニュー](docs/images/admin-menu.png) | ![温泉管理画面](docs/images/admin-onsens.png) |
+
+## 環境構築・起動方法
+
+### 前提環境
+
+* Java 17
+* PostgreSQL
+* Git
+
+Maven Wrapperを使用するため、Mavenを別途インストールする必要はありません。
+
+### 1. リポジトリを取得
+
+```bash
+git clone https://github.com/shirakou/onsen-review-app.git
+cd onsen-review-app
+```
+
+### 2. データベースを作成
+
+PostgreSQLで次のデータベースを作成します。
+
+```sql
+CREATE DATABASE onsen_review_app;
+```
+
+### 3. ローカル設定ファイルを作成
+
+`src/main/resources/application-local.properties`を作成し、使用するPostgreSQLの接続情報を設定します。
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/onsen_review_app
+spring.datasource.username=使用するユーザー名
+spring.datasource.password=使用するパスワード
+
+server.servlet.session.timeout=30m
+```
+
+`application-local.properties`は`.gitignore`の対象としており、認証情報はリポジトリに含まれません。
+
+### 4. アプリケーションを起動
+
+```bash
+./mvnw spring-boot:run
+```
+
+起動後、ブラウザで以下へアクセスします。
+
+```text
+http://localhost:8080
+```
+
 ## 使用技術
 
 * Java 17
@@ -13,51 +78,62 @@
 * Thymeleaf
 * PostgreSQL
 * Bootstrap
+* JUnit
+* Mockito
 
-## 実装状況
+## 主な機能
 
-### Entity
+### 未ログインユーザー
 
-* User
-* Onsen
-* Review
-* Favorite
-
-### 機能
-
-#### 新規会員登録
-
-* 入力フォーム
-* バリデーション
-* メールアドレス重複チェック
-* BCryptによるパスワードハッシュ化
-* PostgreSQLへのユーザー登録
-
-#### ログイン・ログアウト
-
-* Spring Securityを使用したログイン・ログアウト機能
-* メールアドレスとパスワードによる認証
-* BCryptによるパスワード照合
-* ログイン失敗時のエラー表示
-* ログイン成功後のホーム画面遷移
-
-#### 温泉一覧・検索・詳細表示
-
+* 新規会員登録
+  * 入力内容のバリデーション
+  * メールアドレスの重複チェック
+  * BCryptによるパスワードのハッシュ化
+* メールアドレスとパスワードによるログイン
 * 温泉情報の一覧表示
 * 温泉名による部分一致検索
-* 都道府県による完全一致検索
-* 温泉ごとの詳細画面表示
-* `@PathVariable`で温泉IDを受け取り、IDに対応する温泉詳細を取得
+* 都道府県による検索
+* 温泉の詳細情報、平均評価、レビュー一覧の表示
 
-#### レビュー投稿・編集・削除
-* ログインユーザーによるレビュー投稿
-* 入力フォームのバリデーション
-* 温泉詳細画面でのレビュー一覧表示
-* 登録済みレビューの内容を編集画面へ初期表示
-* レビューの更新・削除
-* `Authentication`からログインユーザーのメールアドレスを取得
-* ログインユーザーとレビュー投稿者が一致する場合のみ更新・削除を許可
-* Thymeleafの`th:if`を使用し、投稿者本人にだけ編集・削除ボタンを表示
+### 一般ユーザー
+
+* ログアウト
+* レビューの投稿
+* 自分が投稿したレビューの編集・削除
+* 同じ温泉への重複投稿防止
+* お気に入りの登録・解除
+* マイページでのお気に入り一覧表示
+* マイページでのレビュー履歴表示
+* ユーザー名の変更
+* アカウントの退会（論理削除）
+
+### 管理者
+
+* 管理者専用画面へのアクセス制御
+* 温泉情報の一覧表示・新規登録・編集・削除
+* ユーザー情報の一覧表示
+* 一般ユーザーの利用停止・再有効化
+* レビューの一覧表示・削除
+* レビューまたはお気に入りが登録されている温泉の削除防止
+
+## 自動テスト
+
+JUnitとMockitoを使用し、Service層の単体テストを実装しています。
+
+主に以下の処理を検証しています。
+
+* 複数レビューからの平均評価計算
+* レビューが0件の場合の平均評価
+* 一般ユーザーの利用停止・再有効化
+* 管理者および存在しないユーザーの利用停止防止
+* 関連するレビューやお気に入りが存在する温泉の削除防止
+* 関連データが存在しない温泉の削除
+
+テストは次のコマンドで実行できます。
+
+```bash
+./mvnw test
+```
 
 ## 学習・実装で苦戦した点
 
@@ -77,9 +153,9 @@
 
 ### 温泉詳細表示
 
-検索結果に表示された「詳細」リンクを押すことで、選択した温泉のIDを含む `/onsens/{onsenId}` へアクセスする。
+検索結果に表示された「詳細」リンクを押すことで、選択した温泉のIDを含む`/onsens/{onsenId}`へアクセスする。
 
-Controllerでは `@PathVariable` を使用してURLから`onsenId`を受け取り、Serviceの`getOnsenById()`を呼び出す。
+Controllerでは`@PathVariable`を使用してURLから`onsenId`を受け取り、Serviceの`getOnsenById()`を呼び出す。
 
 ServiceではRepositoryの`findById()`を使用し、指定されたIDに対応する温泉情報をDBから取得する。
 
@@ -90,7 +166,6 @@ Controllerで取得結果を確認し、温泉が存在しない場合はホー�
 温泉が存在する場合は、`Optional`の`get()`を使用して中に格納されている`Onsen`オブジェクトを取り出し、Modelに格納する。
 
 最後に`onsen/detail.html`へModelを渡し、取得した温泉の詳細情報を画面に表示する。
-
 
 ### レビュー編集・削除時の本人確認
 
@@ -106,7 +181,18 @@ Controllerの引数で`Authentication`を受け取り、`getName()`を使用し�
 
 また、`${...}`の中でJavaコードを直接実行しているのではなく、Controllerから渡されたJavaオブジェクトやSpring Securityの認証情報を、Thymeleafがサーバー側で処理してHTMLを生成していることを理解した。
 
+### 退会処理とログインセッションの終了
+
+退会機能では、ログインユーザーの情報をDBから物理的に削除するのではなく、`User`エンティティの`isActive`を`false`へ変更する論理削除を採用した。これにより、ユーザーに紐づくデータを残したまま、アカウントの利用可否を切り替えられるようにした。
+
+Controllerでは`Authentication`からログインユーザーのメールアドレスを取得し、Serviceの退会処理へ渡す。Serviceではメールアドレスに対応するユーザーを検索し、存在する場合は`isActive`を`false`へ変更してRepositoryの`save()`で保存する。
+
+ただし、DB上の`isActive`を変更しただけでは、ブラウザが保持している現在のログインセッションは直ちに終了しない。そのため、退会処理に成功した場合は`SecurityContextLogoutHandler`の`logout()`へ`HttpServletRequest`、`HttpServletResponse`、`Authentication`を渡し、現在のセッションと認証情報を消去する処理を実装した。
+
+ログアウト後は`/login?withdrawn`へリダイレクトする。ログイン画面では、Thymeleafの`th:if="${param.withdrawn}"`を使用してURLパラメータの存在を確認し、退会処理が完了したことを示すメッセージを表示している。
+
 ## 補足
 
 本READMEの「学習・実装で苦戦した点」は、実装時に自身で理解した内容や考えたことを文章化し、生成AIを利用して誤字や表現、文章構成を整えています。
+
 実装内容や学習内容については、自身でコードを確認・動作検証しながら記載しています。
